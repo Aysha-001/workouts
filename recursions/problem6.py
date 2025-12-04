@@ -1,9 +1,3 @@
-'''
-def linecount(filename):
-    return len(open(filename).readlines())
-
-'''
-
 import os 
 
 def traverse_directory_tree_(root_path):
@@ -12,7 +6,10 @@ def traverse_directory_tree_(root_path):
     if os.path.isfile(root_path):
         #store the path
         if root_path.lower().endswith('.py'):
-            line_count = len(open(root_path).readlines())
+            #it will be better to use "with"
+            stripped_lines = (line.strip() for line in open(root_path, 'r'))
+            line_count = sum(1 for line in stripped_lines if line!= '' and 
+                             not line.startswith('#'))
             path = os.path.abspath(root_path)
             yield (line_count, path)
         #return - return is optional, since yield will automatically handle that when stopiteration is called
